@@ -1,8 +1,13 @@
-import { Request, Response } from "express";
-import { customMongoErrorHandler } from "../helpers/errorHandler";
-import { User } from "../models/user";
+import { NextFunction, Request, Response } from "express";
 import shortId from "shortid";
 import jwt from "jsonwebtoken";
+import expressJWT, { secretType } from "express-jwt";
+import { config } from "dotenv";
+
+import { customMongoErrorHandler } from "../helpers/errorHandler";
+import { User } from "../models/user";
+
+config();
 
 export const signUp = async (req: Request, res: Response) => {
   try {
@@ -50,8 +55,6 @@ export const signIn = async (req: Request, res: Response) => {
     }
 
     const isValid = (user as any).authenticate(password);
-    console.log("🚀 ~ file: userController.ts ~ line 55 ~ signIn ~ password", password)
-    console.log("🚀 ~ file: userController.ts ~ line 53 ~ signIn ~ isValid", isValid)
     if (!isValid) {
       return res.status(400).json({
         success: false,
@@ -75,6 +78,40 @@ export const signIn = async (req: Request, res: Response) => {
     res.status(400).json({
       success: false,
       message: customMongoErrorHandler(error),
+    });
+  }
+}
+
+export const requireSignin = expressJWT({
+  secret: process.env.JWT_SECRET! as secretType,
+  algorithms: ["HS256"]
+});
+
+
+export const authMiddleware = async (req: Request, res: Response, next: NextFunction) => {
+  const authUserId = (req as any).user.id;
+  if (!authUserId) {
+    return res.status(403).json({
+      success: false,
+      message: "unauthorized"
+    });
+  }
+
+  try {
+    const user = await User.findById(authUserId);
+    if (!user) {
+      return res.status(403).json({
+        success: false,
+        message: "unauthorized"
+      });
+    }
+
+    (req as any).profile = user;
+    next();
+  } catch (error) {
+    return res.status(403).json({
+      success: false,
+      message: customMongoErrorHandler(error) || "unauthorized",
     });
   }
 }

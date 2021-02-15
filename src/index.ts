@@ -6,7 +6,7 @@ import { config } from "dotenv";
 
 import { APIRoutes } from "./routes";
 import { connectDB } from "./database/connectDB";
-
+import { logger } from "./helpers/logger";
 config();
 
 
@@ -15,7 +15,6 @@ connectDB();
 
 // express app
 const app = express();
-
 
 // middlewares
 app.use(morgan("dev"));
@@ -26,7 +25,7 @@ const PORT = process.env.PORT || 8080;
 
 if (process.env.NODE_ENV === "development") {
   app.use(cors({
-    origin: `http://localhost:${PORT}`
+    origin: `http://localhost:3000`
   }))
 }
 
@@ -44,5 +43,5 @@ app.get('/', (req: Request, res: Response) => {
 
 
 app.listen(PORT, () => {
-  console.log(`Server running at port: ${PORT}`)
+  logger.info(`Server running at port: ${PORT}`)
 })

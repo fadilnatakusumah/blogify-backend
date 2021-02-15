@@ -6,7 +6,7 @@ export const runValidators = (req: Request, res: Response, next: NextFunction) =
   if (!errors.isEmpty()) {
     return res.status(400).json({
       success: false,
-      error: errors.array()[0].msg
+      message: errors.array()[0].msg
     })
   }
 

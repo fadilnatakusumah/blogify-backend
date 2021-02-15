@@ -1,6 +1,19 @@
 import { model, Schema } from "mongoose";
 import crypto from "crypto";
 
+export interface UserDataTypes {
+  name: string,
+  username: string,
+  email: string,
+  hashedPassword?: string,
+  role?: number,
+  salt?: string,
+  about?: string,
+  photo?: any,
+  createdAt?: string,
+  updatedAt?: string,
+}
+
 const UserSchema = new Schema({
   name: {
     type: String,
@@ -27,6 +40,10 @@ const UserSchema = new Schema({
     type: String,
     trim: true,
   },
+  role: {
+    type: Number,
+    default: 0,
+  },
   salt: String,
   about: {
     type: String,
@@ -43,17 +60,14 @@ const UserSchema = new Schema({
 
 UserSchema.virtual("password")
   .set(function (password: string) {
-    console.log("🚀 ~ file: user.ts ~ line 46 ~ password", password)
     // store the password
     this._password = password;
 
     // set salt
     this.salt = this.makeSalt();
-    console.log("🚀 ~ file: user.ts ~ line 51 ~ this.salt ", this.salt)
 
     // encrypt password
     this.hashedPassword = this.encryptPassword(password);
-    console.log("FIRST", this.hashedPassword)
   })
   .get(function () {
     return this._password;
@@ -61,16 +75,12 @@ UserSchema.virtual("password")
 
 (UserSchema as any).methods = {
   authenticate: function (password: string) {
-    console.log("🚀 ~ file: user.ts ~ line 66 ~ this.encryptPassword(password)", this.encryptPassword(password))
-    console.log("🚀 ~ file: user.ts ~ line 67 ~ this.hashedPassword", this.hashedPassword)
     return this.encryptPassword(password) === this.hashedPassword;
   },
   encryptPassword: function (password: string) {
-    console.log("🚀 ~ file: user.ts ~ line 73 ~ password", password)
     if (!password) return '';
 
     try {
-      console.log("🚀 ~ file: user.ts ~ line 77 ~ this.salt", this.salt)
       return crypto
         .createHmac('sha1', this.salt)
         .update(password)

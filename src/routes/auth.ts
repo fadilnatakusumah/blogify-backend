@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import { signIn, signUp } from "../controllers/userController";
+import { signIn, signUp } from "../controllers/auth";
 import { runValidators } from "../validators";
 import { signUpValidator } from "../validators/auth";
 
