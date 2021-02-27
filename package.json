@@ -36,6 +36,7 @@
     "jsonwebtoken": "^8.5.1",
     "mongo-error-handler": "^1.0.0",
     "mongoose": "^5.11.15",
+    "mongoose-error-handler": "^1.1.0",
     "morgan": "^1.10.0",
     "sanitize-html": "^2.3.2",
     "shortid": "^2.2.16",

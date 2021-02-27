@@ -1255,6 +1255,11 @@ mongodb@3.6.3:
   optionalDependencies:
     saslprep "^1.0.0"
 
+mongoose-error-handler@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/mongoose-error-handler/-/mongoose-error-handler-1.1.0.tgz#1da647bdcf19b2f424735d7322ac43aad640d1ce"
+  integrity sha512-Lt203K1Ck/vJ+Vdq598+xxHlWkAhbFuVP5rwKrsY9/l5Q+Qt8mbJCowf7EFu4ww25ihjrUFE/lOLjAEdJJ50pw==
+
 mongoose-legacy-pluralize@1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/mongoose-legacy-pluralize/-/mongoose-legacy-pluralize-1.0.2.tgz#3ba9f91fa507b5186d399fb40854bff18fb563e4"
