@@ -69,10 +69,14 @@ export const signIn = async (req: Request, res: Response) => {
     );
 
     res.cookie('token', token, { expires: new Date(Date.now() + 90000) })
+    const userData = { ...user.toJSON() };
+
+    delete (userData as any).hashedPassword;
+    delete (userData as any).salt;
 
     res.json({
       success: true,
-      data: { token, ...user.toJSON() }
+      data: { token, ...userData }
     })
   } catch (error) {
     res.status(400).json({
