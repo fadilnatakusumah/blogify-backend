@@ -29,6 +29,8 @@ if (process.env.NODE_ENV === "development") {
   }))
 }
 
+app.disable("etag")
+
 // setup routes
 app.use('/api', APIRoutes);
 

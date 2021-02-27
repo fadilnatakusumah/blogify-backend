@@ -3,8 +3,8 @@ import { model, Schema } from "mongoose";
 export interface TagDataTypes {
   name: string,
   slug: string,
-  createdAt: string,
-  updatedAt: string,
+  createdAt?: string,
+  updatedAt?: string,
 }
 
 const TagSchema = new Schema({
